@@ -5,6 +5,7 @@ import Link from "next/link";
 import React, { useState } from "react";
 import { usePathname } from "next/navigation";
 import { GiHamburgerMenu } from "react-icons/gi";
+import LoginButton from "./LoginButton";
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -41,9 +42,7 @@ const Header = () => {
             <Link href="/user" className={getLinkClasses("/user")}>
               User
             </Link>
-            <button className="px-5 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-500 transition-colors">
-              LOGIN
-            </button>
+            <LoginButton/>
           </nav>
 
           <div

@@ -7,6 +7,22 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "uxwing.com",
       },
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
+      },
+      {
+        protocol: "https",
+        hostname: "fakestoreapi.com",
+      },
+      {
+        protocol: "https",
+        hostname: "via.placeholder.com",
+      },
+      {
+        protocol: "https",
+        hostname: "**"
+      },
     ],
   },
 };
