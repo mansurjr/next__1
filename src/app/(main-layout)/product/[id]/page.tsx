@@ -3,17 +3,11 @@ import { notFound } from "next/navigation";
 import DetailProductClient from "../../../../components/ProductDetailView";
 
 type Props = {
-  params: { id: string };
-};
-
-const getParams = async (params: { id: string }) => {
-  return new Promise<{ id: string }>((resolve) => {
-    resolve(params);
-  });
+  params: Promise<{ id: string }>;
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { id } = await getParams(params);
+  const { id } = await params;
 
   const product = await fetch(`https://fakestoreapi.com/products/${id}`).then(
     (res) => res.json()
@@ -38,7 +32,7 @@ export async function generateStaticParams() {
 }
 
 export default async function DetailProduct({ params }: Props) {
-  const { id } = await getParams(params);
+  const { id } = await params;
 
   const response = await fetch(`https://fakestoreapi.com/products/${id}`, {
     next: { revalidate: 60 },

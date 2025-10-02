@@ -1,14 +1,12 @@
 import { Metadata } from "next";
 import UsersDetailClient from "../../../../components/UserDetailView";
 
-type Props = { params: { id: string } };
-
-const getParams = async (params: { id: string }) => {
-  return new Promise<{ id: string }>((resolve) => resolve(params));
+type Props = {
+  params: Promise<{ id: string }>;
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { id } = await getParams(params);
+  const { id } = await params;
 
   const user = await fetch(`https://fakestoreapi.com/users/${id}`).then((res) =>
     res.json()
@@ -28,6 +26,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function UsersDetailPage({ params }: Props) {
-  const { id } = await getParams(params); 
+  const { id } = await params;
   return <UsersDetailClient id={id} />;
 }
