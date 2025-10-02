@@ -1,4 +1,3 @@
-// app/product/[id]/page.tsx
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import DetailProductClient from "../../../../components/ProductDetailView";
@@ -7,10 +6,18 @@ type Props = {
   params: { id: string };
 };
 
+const getParams = async (params: { id: string }) => {
+  return new Promise<{ id: string }>((resolve) => {
+    resolve(params);
+  });
+};
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const product = await fetch(
-    `https://fakestoreapi.com/products/${params.id}`
-  ).then((res) => res.json());
+  const { id } = await getParams(params);
+
+  const product = await fetch(`https://fakestoreapi.com/products/${id}`).then(
+    (res) => res.json()
+  );
 
   return {
     title: product.title,
@@ -25,21 +32,20 @@ export async function generateStaticParams() {
   const data = await fetch("https://fakestoreapi.com/products?limit=100").then(
     (res) => res.json()
   );
-  return data?.map((pro: any) => ({
+  return data.map((pro: any) => ({
     id: pro.id.toString(),
   }));
 }
 
 export default async function DetailProduct({ params }: Props) {
-  const response = await fetch(
-    `https://fakestoreapi.com/products/${params.id}`,
-    {
-      next: { revalidate: 60 },
-    }
-  );
-  if (!response.ok) {
-    notFound();
-  }
+  const { id } = await getParams(params);
+
+  const response = await fetch(`https://fakestoreapi.com/products/${id}`, {
+    next: { revalidate: 60 },
+  });
+
+  if (!response.ok) notFound();
+
   const data = await response.json();
 
   return <DetailProductClient product={data} />;
